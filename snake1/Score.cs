@@ -15,21 +15,19 @@ namespace Snake
             score = 0;
         }
 
-        // Увеличиваем счет при поедании еды
+
         public void AddPoint()
         {
             score++;
             Display();
         }
 
-        // Вывод текущего счета на экран
         public void Display()
         {
-            Console.SetCursorPosition(0, 0);  // Устанавливаем курсор в верхнем левом углу
+            Console.SetCursorPosition(0, 0); 
             Console.Write($"Score: {score}");
         }
 
-        // Получение текущего значения счета
         public int GetScore()
         {
             return score;
