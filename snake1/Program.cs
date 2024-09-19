@@ -15,100 +15,64 @@ namespace Snake
     {
         static void Main(string[] args)
         {
-            //Console.SetBufferSize(80, 25);
-            string playerName = "";
-            try
-            {
-                StreamWriter sw = new StreamWriter(@"..\..\..\text.txt", true);
-                Console.WriteLine("Sisesta oma nimi: ");
-                playerName = Console.ReadLine();
-                sw.WriteLine(playerName);
-                sw.Close();
-            }
+            Players players = new Players(@"..\..\..\text.txt");
 
-            catch (Exception)
-            {
-                Console.WriteLine("Fail ei lieutd");
-            }
-            try
-            {
-                StreamReader sr = new StreamReader(@"..\..\..\text.txt");
-                string lines = sr.ReadToEnd();
-                Console.WriteLine(lines);
-                sr.Close();
-
-                List<string> result = new List<string>();
-                foreach (string rida in File.ReadAllLines(@"..\..\..\text.txt"))
-                {
-                    result.Add(rida);
-                }
-                foreach (var rida in result)
-                { 
-                    Console.WriteLine(rida);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            Console.ReadLine();
-
-
+            Console.WriteLine("sinu nimi: ");
+            string playerName = Console.ReadLine();
 
             Walls walls = new Walls(80, 25);
             walls.Draw();
 
-
-            Point p = new Point(4, 5, '*');
+            Point p = new Point(4, 5, '*', ConsoleColor.Green);
             Snake snake = new Snake(p, 4, Direction.RIGHT);
             snake.Draw();
 
-            FoodCreator foodCreator = new FoodCreator(80, 25, '¤');
+            FoodCreator foodCreator = new FoodCreator(80, 25, '¤', '?');
             Point food = foodCreator.CreateFood();
             food.Draw();
 
-            Score score = new Score(); 
+            Score score = new Score();
             score.Display();
 
+            int speed = 100;
             while (true)
             {
                 if (walls.IsHit(snake) || snake.IsHitTail())
                 {
                     break;
                 }
-                if (snake.Eat(food))
+                if (snake.Eat(food, score, ref speed)) 
                 {
                     food = foodCreator.CreateFood();
                     food.Draw();
-                    score.AddPoint();
+                    score.Display();
                 }
                 else
                 {
                     snake.Move();
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(speed);
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey();
                     snake.HandleKey(key.Key);
                 }
             }
-            Console.SetCursorPosition(0, 2);
-            Console.WriteLine("Game Over");
-            Console.WriteLine($"Final Score: {score.GetScore()}");
 
             try
             {
-                StreamWriter sw = new StreamWriter(@"..\..\..\text.txt", true);
-                sw.WriteLine($"{playerName}: {score.GetScore()}");  
-                sw.Close();
+                players.AddPlayer(playerName, score.GetScore());
             }
             catch (Exception)
             {
-                Console.WriteLine($"viga");
+                Console.WriteLine("viga");
             }
 
+            GameOverDisplay gameOverDisplay = new GameOverDisplay(players);
+            gameOverDisplay.ShowGameOver();
+
+            Console.ReadLine();
         }
     }
 }

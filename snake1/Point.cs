@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace Snake
         public int x;
         public int y;
         public char sym;
+        public ConsoleColor Color { get; set; }
+
 
         public Point()
         {
@@ -47,11 +50,13 @@ namespace Snake
             Draw();
         }
 
-        public Point(int _x, int _y, char _sym)
+        public Point(int _x, int _y, char _sym, ConsoleColor color)
         {
             x = _x;
             y = _y;
             sym = _sym;
+            Color = color;
+            Color = color;
         }
 
         public Point(Point p)
@@ -59,13 +64,16 @@ namespace Snake
             x = p.x;
             y = p.y;
             sym = p.sym;
+            Color = p.Color;
         }
 
 
         public void Draw()
         {
             Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = Color;
             Console.Write(sym);
+            Console.ResetColor();
         }
     }
 }

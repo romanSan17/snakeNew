@@ -8,23 +8,37 @@ namespace Snake
 {
     public class Score
     {
-        private int score;
+        public int score;
 
         public Score()
         {
             score = 0;
         }
 
-
+        // Suurendab skoori
         public void AddPoint()
         {
             score++;
             Display();
         }
 
+        // Vähendab skoori
+        public void minusPoint()
+        {
+            score--;
+            Display();
+        }
+
+        // Määrab konkreetse loendusväärtuse, конкретный счет
+        public void overScore(int newScore)
+        {
+            score = newScore; 
+            Display();
+        }
+
         public void Display()
         {
-            Console.SetCursorPosition(0, 0); 
+            Console.SetCursorPosition(0, 0);
             Console.Write($"Score: {score}");
         }
 

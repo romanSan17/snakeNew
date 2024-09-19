@@ -1,48 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
-namespace snake1
+
+namespace Snake
 {
-    internal class Players
+    public class Players
     {
-        string playerName = "";
-        try
-            {
-                StreamWriter sw = new StreamWriter(@"..\..\..\text.txt", true);
-                Console.WriteLine("Sisesta oma nimi: ");
-                playerName = Console.ReadLine();
-                sw.WriteLine(playerName);
-                sw.Close();
-            }
+        private readonly string _filePath;
 
-            catch (Exception)
-            {
-                Console.WriteLine("Fail ei lieutd");
-            }
+        public Players(string filePath)
+        {
+            _filePath = filePath;
+        }
+
+        //lisab uue mängija nime faili.
+        public void AddPlayer(string playerName, int score)
+        {
             try
             {
-                StreamReader sr = new StreamReader(@"..\..\..\text.txt");
-                string lines = sr.ReadToEnd();
-                Console.WriteLine(lines);
-                sr.Close();
+                using (StreamWriter sw = new StreamWriter(_filePath, true))
+                {
+                    sw.WriteLine($"{playerName}: {score}");
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("viga");
+            }
+        }
 
-                List<string> result = new List<string>();
-            foreach (string rida in File.ReadAllLines(@"..\..\..\text.txt"))
-    {
-        result.Add(rida);
-    }
-            foreach (var rida in result)
-    {
-        Console.WriteLine(rida);
+        // loeb nimed ja kannab need loetellu
+        public List<string> GetPlayers()
+        {
+            List<string> players = new List<string>();
+            try
+            {
+                using (StreamReader sr = new StreamReader(_filePath))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        players.Add(line);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("viga");
+            }
+            return players;
+        }
     }
 }
-            catch (Exception e)
-{
-    Console.WriteLine(e);
-}
-Console.ReadLine();
-    }
-}
+
