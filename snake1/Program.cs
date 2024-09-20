@@ -35,6 +35,9 @@ namespace Snake
             score.Display();
 
             int speed = 100;
+
+            //mängutsükkel
+
             while (true)
             {
                 if (walls.IsHit(snake) || snake.IsHitTail())

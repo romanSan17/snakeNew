@@ -80,7 +80,7 @@ namespace Snake
                 }
                 else if (food.sym == '?') 
                 {
-                    speed = Math.Max(speed - 10, 70); //  Suurendab kiirust
+                    speed = Math.Max(speed - 10, 0); //  Suurendab kiirust
                     score.minusPoint(); // Vähendab skoori
                 }
 
